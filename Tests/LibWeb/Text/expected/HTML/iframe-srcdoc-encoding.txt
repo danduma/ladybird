@@ -1,0 +1,8 @@
+no declaration: UTF-8
+It’s “quoted” text, é 日本語 🐞
+ASCII only: UTF-8
+ASCII
+charset declaration: UTF-8
+It’s “quoted” text, é 日本語 🐞
+http-equiv declaration: UTF-8
+It’s “quoted” text, é 日本語 🐞

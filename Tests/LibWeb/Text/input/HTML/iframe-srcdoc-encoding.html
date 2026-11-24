@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="../include.js"></script>
+<script>
+    asyncTest(async done => {
+        const text = "It\u2019s \u201cquoted\u201d text, \u00e9 \u65e5\u672c\u8a9e \ud83d\udc1e";
+        for (const [name, source] of [
+            ["no declaration", text],
+            ["ASCII only", "ASCII"],
+            ["charset declaration", '<meta charset="windows-1252">' + text],
+            ["http-equiv declaration", '<meta http-equiv="content-type" content="text/html; charset=windows-1252">' + text],
+        ]) {
+            const iframe = document.createElement("iframe");
+            const loaded = new Promise(resolve => iframe.onload = resolve);
+            iframe.srcdoc = source;
+            document.body.appendChild(iframe);
+            await loaded;
+            println(`${name}: ${iframe.contentDocument.characterSet}`);
+            println(iframe.contentDocument.body.textContent);
+            iframe.remove();
+        }
+        done();
+    });
+</script>

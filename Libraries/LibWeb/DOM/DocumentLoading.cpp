@@ -156,6 +156,8 @@ static WebIDL::ExceptionOr<GC::Ref<DOM::Document>> load_html_document(HTML::Navi
     //         and set up a deferred parser directly, so the document is parsed as soon as scripts may run for it.
     else if (auto source = navigation_params.response->body_source();
         source.has_value() && document->url() == URL::about_srcdoc()) {
+        // The srcdoc resource was encoded as UTF-8 when its navigation params were created.
+        document->set_encoding("UTF-8"_utf16);
         auto mime_type = Fetch::Infrastructure::extract_mime_type(navigation_params.response->header_list());
         auto url = navigation_params.response->url().value();
         auto parser = HTML::HTMLParser::create_with_uncertain_encoding(document, source->bytes(), mime_type);

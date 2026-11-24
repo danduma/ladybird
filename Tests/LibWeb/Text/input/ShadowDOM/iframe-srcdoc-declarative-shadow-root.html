@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<script src="../include.js"></script>
+<script>
+    asyncTest(async done => {
+        const iframe = document.createElement("iframe");
+        const loaded = new Promise(resolve => iframe.onload = resolve);
+        iframe.srcdoc = `<!DOCTYPE html>
+            <div id="open"><template shadowrootmode="open"><slot></slot><span>shadow content</span></template>light content</div>
+            <div id="closed"><template shadowrootmode="closed">closed content</template></div>`;
+        document.body.appendChild(iframe);
+        await loaded;
+
+        const openHost = iframe.contentDocument.getElementById("open");
+        const closedHost = iframe.contentDocument.getElementById("closed");
+        println(`open shadow root: ${openHost.shadowRoot !== null}`);
+        println(`shadow text: ${openHost.shadowRoot?.querySelector("span").textContent}`);
+        println(`assigned text: ${openHost.shadowRoot?.querySelector("slot").assignedNodes()[0]?.textContent}`);
+        println(`open template consumed: ${openHost.querySelector("template") === null}`);
+        println(`closed shadow root hidden: ${closedHost.shadowRoot === null}`);
+        println(`closed template consumed: ${closedHost.querySelector("template") === null}`);
+        done();
+    });
+</script>

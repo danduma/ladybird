@@ -159,6 +159,7 @@ static WebIDL::ExceptionOr<GC::Ref<DOM::Document>> load_html_document(HTML::Navi
         auto mime_type = Fetch::Infrastructure::extract_mime_type(navigation_params.response->header_list());
         auto url = navigation_params.response->url().value();
         auto parser = HTML::HTMLParser::create_with_uncertain_encoding(document, source->bytes(), mime_type);
+        parser->set_allow_declarative_shadow_roots(HTML::HTMLParser::AllowDeclarativeShadowRoots::Yes);
         document->set_deferred_parser_start(GC::create_function(GC::Heap::the(), GC::captures(parser, url), [](auto& parser, auto& url) {
             parser->run(url);
         }));

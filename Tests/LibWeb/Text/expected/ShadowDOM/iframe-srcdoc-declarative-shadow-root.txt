@@ -1,0 +1,6 @@
+open shadow root: true
+shadow text: shadow content
+assigned text: light content
+open template consumed: true
+closed shadow root hidden: true
+closed template consumed: true
